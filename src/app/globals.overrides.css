@@ -274,3 +274,7 @@ body {
 .panel-heading-toggle[aria-expanded="false"] svg {
   transform: rotate(-90deg);
 }
+
+/* Keep the forecast timeline anchored to the dashboard's bottom grid row. */
+.workspace-grid { grid-row: 2; }
+.timeline-panel { grid-row: 3; }
