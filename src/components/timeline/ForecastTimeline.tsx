@@ -1,31 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Clock3 } from "lucide-react";
 import { useSimulation } from "@/hooks/useSimulation";
 import { Slider } from "@/components/ui/Slider";
 import { PlaybackControls } from "@/components/timeline/PlaybackControls";
 
 const MAX_FORECAST_MINUTES = 60;
+const MIN_FORECAST_MINUTES = 0;
 const PLAYBACK_STEP_MINUTES = 5;
 
-function advanceTimeline(currentMinutes: number, stepMinutes: number) {
-  return currentMinutes >= MAX_FORECAST_MINUTES ? 0 : currentMinutes + stepMinutes;
+function clampTimelineValue(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function advanceTimeline(currentMinutes: number, stepMinutes: number, min: number, max: number) {
+  const normalizedCurrent = clampTimelineValue(currentMinutes, min, max);
+  return normalizedCurrent >= max ? min : Math.min(max, normalizedCurrent + stepMinutes);
 }
 
 export function ForecastTimeline() {
   const { forecast, setCurrentMinutes } = useSimulation();
   const [playing, setPlaying] = useState(false);
+  const min = MIN_FORECAST_MINUTES;
+  const max = MAX_FORECAST_MINUTES;
+  const currentMinutes = clampTimelineValue(forecast.currentMinutes, min, max);
+  const progressPercent = max > min
+    ? Math.min(100, Math.max(0, ((currentMinutes - min) / (max - min)) * 100))
+    : 0;
+  const sliderStyle = { "--timeline-progress": `${progressPercent}%` } as CSSProperties;
 
   useEffect(() => {
     if (!playing) return;
 
     const timer = window.setInterval(() => {
-      setCurrentMinutes(advanceTimeline(forecast.currentMinutes, 1));
+      setCurrentMinutes(advanceTimeline(currentMinutes, 1, min, max));
     }, 90);
 
     return () => window.clearInterval(timer);
-  }, [playing, forecast.currentMinutes, setCurrentMinutes]);
+  }, [playing, currentMinutes, min, max, setCurrentMinutes]);
 
   function handleSliderChange(event: React.ChangeEvent<HTMLInputElement>) {
     setPlaying(false);
@@ -34,7 +47,7 @@ export function ForecastTimeline() {
 
   function handleStep() {
     setPlaying(false);
-    setCurrentMinutes(advanceTimeline(forecast.currentMinutes, PLAYBACK_STEP_MINUTES));
+    setCurrentMinutes(advanceTimeline(currentMinutes, PLAYBACK_STEP_MINUTES, min, max));
   }
 
   return (
@@ -49,14 +62,15 @@ export function ForecastTimeline() {
           <div className="timeline-labels">
             <span>0 MIN</span>
             <span>15 MIN</span>
-            <span className={forecast.currentMinutes === 30 ? "active" : ""}>CURRENT {forecast.currentMinutes} MIN</span>
+            <span className={currentMinutes === 30 ? "active" : ""}>CURRENT {currentMinutes} MIN</span>
             <span>60 MIN</span>
           </div>
           <Slider
             aria-label="Forecast timeline"
-            min="0"
-            max={String(MAX_FORECAST_MINUTES)}
-            value={forecast.currentMinutes}
+            min={min}
+            max={max}
+            value={currentMinutes}
+            style={sliderStyle}
             onChange={handleSliderChange}
           />
           <div className="timeline-ticks"><i /><i /><i /><i /><i /><i /><i /><i /><i /></div>
