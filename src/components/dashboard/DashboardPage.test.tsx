@@ -37,4 +37,56 @@ describe("dashboard display layers", () => {
 
     expect(layer).not.toBeChecked();
   });
-});
+
+  it("centers every infrastructure icon through one shared container class", () => {
+    const { container } = render(<DashboardPage />);
+    const iconContainers = container.querySelectorAll(".infra-icon");
+
+    expect(iconContainers).toHaveLength(6);
+    iconContainers.forEach((container) => {
+      expect(container).not.toHaveAttribute("style");
+      expect(container).toHaveClass("infra-icon");
+    });
+  });
+
+  it("collapses only Forecast Summary contents and keeps the heading available", async () => {
+    const user = userEvent.setup();
+    render(<DashboardPage />);
+
+    const collapseButton = screen.getByRole("button", { name: "Collapse Forecast Summary" });
+    expect(collapseButton).toHaveAttribute("aria-expanded", "true");
+
+    await user.click(collapseButton);
+
+    const expandButton = screen.getByRole("button", { name: "Expand Forecast Summary" });
+    expect(expandButton).toHaveAttribute("aria-expanded", "false");
+    expect(document.getElementById("forecast-summary-content")).toHaveAttribute("hidden");
+
+    await user.click(expandButton);
+
+    expect(screen.getByRole("button", { name: "Collapse Forecast Summary" })).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("keeps the operational note editable without a manual resize affordance", async () => {
+    const user = userEvent.setup();
+    render(<DashboardPage />);
+    const note = screen.getByRole("textbox", { name: "Operational note" });
+
+    expect(note).toHaveClass("operational-note");
+    expect(note).toHaveAttribute("rows", "2");
+
+    await user.clear(note);
+    await user.type(note, "Updated operational note");
+    expect(note).toHaveValue("Updated operational note");
+  });
+
+  it("makes every visible panel arrow collapse and expand its contents", async () => {
+    const user = userEvent.setup();
+    render(<DashboardPage />);
+
+    await user.click(screen.getByRole("button", { name: "Collapse Incident Configuration" }));
+    expect(screen.getByRole("button", { name: "Expand Incident Configuration" })).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(screen.getByRole("button", { name: "Collapse Display Layers" }));
+    expect(screen.getByRole("button", { name: "Expand Display Layers" })).toHaveAttribute("aria-expanded", "false");
+  });});
