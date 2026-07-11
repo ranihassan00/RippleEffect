@@ -16,6 +16,10 @@
 .app-shell,
 .workspace-grid { width: 100%; min-width: 0; }
 
+/* Keep rail content inside its column without creating a dead horizontal scrollbar. */
+.left-rail,
+.right-rail { overflow-x: clip; }
+
 .incident-headline { min-width: 0; }
 
 @media (max-width: 760px) {
