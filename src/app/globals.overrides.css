@@ -1,0 +1,15 @@
+@import "./globals.base.css";
+
+.app-shell,
+.workspace-grid { width: 100%; min-width: 0; }
+
+.incident-headline { min-width: 0; }
+
+@media (max-width: 760px) {
+  .topbar { min-width: 0; }
+  .brand-lockup { min-width: 0; flex: 0 1 auto; }
+  .incident-headline { min-width: 0; flex: 1 1 auto; }
+  .topbar-actions { flex: 0 0 auto; }
+  .workspace-grid { width: 100%; min-width: 0; }
+  .map-column, .map-stage, .map-svg { width: 100%; min-width: 0; }
+}
