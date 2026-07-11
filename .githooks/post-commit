@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+branch=$(git symbolic-ref --quiet --short HEAD || true)
+if [ -z "$branch" ]; then
+  echo "Automatic push skipped: detached HEAD." >&2
+  exit 0
+fi
+
+remote=$(git config "branch.$branch.remote" || true)
+if [ -z "$remote" ]; then
+  remote=origin
+fi
+
+echo "Pushing commit on $branch to $remote..."
+git push "$remote" "HEAD:refs/heads/$branch"
