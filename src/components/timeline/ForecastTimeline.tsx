@@ -27,18 +27,24 @@ export function ForecastTimeline() {
     return () => window.clearInterval(timer);
   }, [playing, forecast.currentMinutes, setCurrentMinutes]);
 
+  function handleSliderChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setPlaying(false);
+    setCurrentMinutes(Number(event.target.value));
+  }
+
+  function handleStep() {
+    setPlaying(false);
+    setCurrentMinutes(advanceTimeline(forecast.currentMinutes, PLAYBACK_STEP_MINUTES));
+  }
+
   return (
-    <div className="timeline-panel">
+    <div className="timeline-panel" aria-label="Forecast timeline controls">
       <div className="timeline-heading">
         <span>FORECAST TIMELINE</span>
         <span className="timeline-validity"><Clock3 size={13} /> 15 / 30 / 60 MIN FRAMES</span>
       </div>
       <div className="timeline-row">
-        <PlaybackControls
-          playing={playing}
-          onToggle={() => setPlaying((value) => !value)}
-          onStep={() => setCurrentMinutes(advanceTimeline(forecast.currentMinutes, PLAYBACK_STEP_MINUTES))}
-        />
+        <PlaybackControls playing={playing} onToggle={() => setPlaying((value) => !value)} onStep={handleStep} />
         <div className="timeline-track-wrap">
           <div className="timeline-labels">
             <span>0 MIN</span>
@@ -51,7 +57,7 @@ export function ForecastTimeline() {
             min="0"
             max={String(MAX_FORECAST_MINUTES)}
             value={forecast.currentMinutes}
-            onChange={(event) => setCurrentMinutes(Number(event.target.value))}
+            onChange={handleSliderChange}
           />
           <div className="timeline-ticks"><i /><i /><i /><i /><i /><i /><i /><i /><i /></div>
         </div>
