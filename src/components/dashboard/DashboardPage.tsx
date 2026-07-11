@@ -11,8 +11,29 @@ import { ForecastPanel } from "@/components/dashboard/ForecastPanel";
 import { InfrastructurePanel } from "@/components/dashboard/InfrastructurePanel";
 import { ForecastTimeline } from "@/components/timeline/ForecastTimeline";
 
+const displayLayers = [
+  ["plume", "Probable impact zone"],
+  ["uncertainty", "Forecast uncertainty"],
+  ["infrastructure", "Critical infrastructure"],
+  ["wind", "Wind vector"]
+] as const;
+
 export default function DashboardPage() {
-  const { incident, forecast, runForecast } = useSimulation();
+  const { incident, forecast, runForecast, layers, toggleLayer } = useSimulation();
   const hazard = HAZARDS.find((item) => item.id === incident.hazardId) ?? HAZARDS[0];
-  return <main className="app-shell"><header className="topbar"><div className="brand-lockup"><div className="brand-mark"><Activity size={26} /></div><div><strong>RIPPLE EFFECT</strong><span>AIRBORNE-HAZARD INTELLIGENCE</span></div></div><div className="incident-headline"><AlertTriangle size={20} /><span>{incident.title.toUpperCase()}</span><small>· {hazard.formula}</small></div><div className="topbar-actions"><div className="model-time"><span>MAY 26, 2025&nbsp;&nbsp;09:42</span><small>MODEL UPDATED&nbsp; 09:42</small></div><Button variant="primary" onClick={runForecast} disabled={forecast.status === "running"}><span className="button-play">▶</span>{forecast.status === "running" ? " RUNNING" : " RUN FORECAST"}</Button><Button variant="icon" aria-label="Open settings"><Settings2 size={17} /></Button></div></header><div className="workspace-grid"><aside className="left-rail"><IncidentPanel /><WeatherPanel /><div className="layer-panel panel"><div className="panel-heading"><span>DISPLAY LAYERS</span><ChevronDown size={15} /></div>{["plume", "uncertainty", "infrastructure", "wind"].map((layer) => <label className="check-row" key={layer}><input type="checkbox" checked={true} readOnly /><span>{layer === "plume" ? "Probable impact zone" : layer === "uncertainty" ? "Forecast uncertainty" : layer === "infrastructure" ? "Critical infrastructure" : "Wind vector"}</span></label>)}<p className="estimate-note">Estimated dispersion — decision-support estimate.</p></div></aside><section className="map-column"><IncidentMap /><div className="map-footer-meta"><span>MAPBOX / OTTAWA DEMO BASEMAP</span><span>GRID RESOLUTION 250 m</span><span>SIMULATION v0.1.0 · UI DEMO</span></div></section><aside className="right-rail"><ForecastPanel /><InfrastructurePanel /></aside></div><ForecastTimeline /><footer className="disclaimer"><span>PROTOTYPE DECISION-SUPPORT SYSTEM</span><span>Forecasts are simplified probabilistic estimates and must not replace validated emergency-response procedures or trained authority decisions.</span></footer></main>;
+
+  return <main className="app-shell">
+    <header className="topbar">
+      <div className="brand-lockup"><div className="brand-mark"><Activity size={26} /></div><div><strong>RIPPLE EFFECT</strong><span>AIRBORNE-HAZARD INTELLIGENCE</span></div></div>
+      <div className="incident-headline"><AlertTriangle size={20} /><span>{incident.title.toUpperCase()}</span><small>· {hazard.formula}</small></div>
+      <div className="topbar-actions"><div className="model-time"><span>MAY 26, 2025&nbsp;&nbsp;09:42</span><small>MODEL UPDATED&nbsp; 09:42</small></div><Button variant="primary" onClick={runForecast} disabled={forecast.status === "running"}><span className="button-play">▶</span>{forecast.status === "running" ? " RUNNING" : " RUN FORECAST"}</Button><Button variant="icon" aria-label="Open settings"><Settings2 size={17} /></Button></div>
+    </header>
+    <div className="workspace-grid">
+      <aside className="left-rail"><IncidentPanel /><WeatherPanel /><div className="layer-panel panel"><div className="panel-heading"><span>DISPLAY LAYERS</span><ChevronDown size={15} /></div>{displayLayers.map(([layer, label]) => <label className="check-row" key={layer}><input type="checkbox" aria-label={label} checked={Boolean(layers[layer])} onChange={() => toggleLayer(layer)} /><span>{label}</span></label>)}<p className="estimate-note">Estimated dispersion — decision-support estimate.</p></div></aside>
+      <section className="map-column"><IncidentMap /><div className="map-footer-meta"><span>MAPBOX / OTTAWA DEMO BASEMAP</span><span>GRID RESOLUTION 250 m</span><span>SIMULATION v0.1.0 · UI DEMO</span></div></section>
+      <aside className="right-rail"><ForecastPanel /><InfrastructurePanel /></aside>
+    </div>
+    <ForecastTimeline />
+    <footer className="disclaimer"><span>PROTOTYPE DECISION-SUPPORT SYSTEM</span><span>Forecasts are simplified probabilistic estimates and must not replace validated emergency-response procedures or trained authority decisions.</span></footer>
+  </main>;
 }
