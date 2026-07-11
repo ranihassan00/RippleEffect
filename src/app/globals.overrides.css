@@ -16,6 +16,40 @@
 .app-shell,
 .workspace-grid { width: 100%; min-width: 0; }
 
+/* Keep rail content inside its column without creating a dead horizontal scrollbar. */
+.left-rail,
+.right-rail { overflow-x: clip; }
+/* Keep scroll affordances visible but quiet inside the operations rails. */
+.left-rail,
+.right-rail {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(133, 157, 166, 0.62) transparent;
+}
+
+.left-rail::-webkit-scrollbar,
+.right-rail::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.left-rail::-webkit-scrollbar-track,
+.right-rail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.left-rail::-webkit-scrollbar-thumb,
+.right-rail::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: rgba(133, 157, 166, 0.62);
+  background-clip: content-box;
+}
+
+.left-rail::-webkit-scrollbar-thumb:hover,
+.right-rail::-webkit-scrollbar-thumb:hover {
+  background: rgba(51, 211, 244, 0.78);
+  background-clip: content-box;
+}
 .incident-headline { min-width: 0; }
 
 @media (max-width: 760px) {
