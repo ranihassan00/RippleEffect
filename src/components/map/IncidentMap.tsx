@@ -6,6 +6,7 @@ import { useSimulation } from "@/hooks/useSimulation";
 import { mapPercentToGeo, panViewport, resetViewport, viewportPointToPercent, zoomViewport, type MapViewport } from "@/lib/map-utils";
 import { DEMO_INFRASTRUCTURE } from "@/lib/demo-data";
 import { PlumeLayer } from "@/components/map/PlumeLayer";
+import { RiskZoneLayer } from "@/components/map/RiskZoneLayer";
 import { WindIndicator } from "@/components/map/WindIndicator";
 
 function InfrastructureGlyph({ type }: { type: string }) {
@@ -27,6 +28,7 @@ export function IncidentMap() {
   const plumeVisible = layers.plume && forecast.status !== "idle";
   const markerX = ((incident.longitude + 75.82) / 0.16) * 1000;
   const markerY = ((45.47 - incident.latitude) / 0.045) * 760;
+  const infrastructure = forecast.status === "ready" && currentFrame ? currentFrame.infrastructure : DEMO_INFRASTRUCTURE;
 
   function handleMapClick(event: React.MouseEvent<HTMLDivElement>) {
     if (suppressClickRef.current || (event.target instanceof Element && event.target.closest("button"))) {
@@ -107,8 +109,9 @@ export function IncidentMap() {
         </g>
         <g fill="none" stroke="#5b7180" strokeWidth="1" opacity="0.52"><path d="M80 170 L180 610" /><path d="M280 80 L440 720" /><path d="M450 50 L670 700" /><path d="M640 60 L820 730" /><path d="M810 40 L930 630" /><path d="M70 292 C260 260 480 260 920 290" /><path d="M48 555 C320 495 620 540 968 588" /></g>
         <g fontFamily="ui-monospace, monospace" fill="#6f8a99" fontSize="15" letterSpacing="2"><text x="502" y="108">OTTAWA RIVER</text><text x="472" y="271" fill="#9caeb7" fontSize="20">OTTAWA</text><text x="366" y="333">BYWARD MARKET</text><text x="630" y="525">THE GLEBE</text><text x="760" y="325">VANIER</text><text x="176" y="463">HULL</text><text x="310" y="585">NEPEAN</text><text x="614" y="458">CENTRETOWN</text></g>
+        <RiskZoneLayer centerX={markerX} centerY={markerY} minutes={minutes} visible={Boolean(layers.plume && forecast.status !== "idle")} />
         <PlumeLayer minutes={minutes} visible={plumeVisible} uncertaintyVisible={layers.uncertainty} />
-        {layers.infrastructure && DEMO_INFRASTRUCTURE.map((feature) => <g key={feature.id} transform={`translate(${feature.x * 10},${feature.y * 7.5})`}><circle r="18" fill="#06131c" stroke="#7eb8cd" strokeWidth="2" /><foreignObject x="-11" y="-11" width="22" height="22"><InfrastructureGlyph type={feature.type} /></foreignObject></g>)}
+        {layers.infrastructure && infrastructure.map((feature) => <g key={feature.id} transform={`translate(${feature.x * 10},${feature.y * 7.5})`} aria-label={`${feature.name}, ${feature.zone} risk zone`}><circle r="18" fill="#06131c" stroke="#7eb8cd" strokeWidth="2" /><foreignObject x="-11" y="-11" width="22" height="22"><InfrastructureGlyph type={feature.type} /></foreignObject></g>)}
         <g transform={`translate(${markerX} ${markerY})`} aria-label={`Incident source at ${incident.latitude}, ${incident.longitude}`}><circle r="30" fill="#ff3d4e" opacity="0.12" filter="url(#map-glow)" /><path d="M0 -22 C -18 -22 -25 -8 -25 5 C -25 22 0 42 0 42 S 25 22 25 5 C 25 -8 18 -22 0 -22Z" fill="#ff4a4e" stroke="#ffe0d7" strokeWidth="2" /><circle cy="5" r="8" fill="#07131c" /><rect x="-35" y="48" width="160" height="45" rx="5" fill="#091821" stroke="#f24b51" /><text x="-23" y="66" fill="#ff5657" fontFamily="ui-monospace, monospace" fontSize="12" fontWeight="700">SOURCE</text><text x="-23" y="83" fill="#f4f8f8" fontFamily="ui-monospace, monospace" fontSize="11">Industrial Facility</text></g>
         <g transform="translate(26 30)"><rect width="46" height="48" rx="4" fill="#0a1b27" stroke="#8396a1" /><path d="M23 8 L16 25 L23 22 L30 25Z" fill="#f1f5f6" /><text x="18" y="39" fill="#b9c5c8" fontSize="12" fontFamily="ui-monospace, monospace">N</text></g>
         <g transform="translate(925 616)"><rect width="48" height="112" rx="5" fill="#081722" stroke="#4b6674" /><path d="M24 10v19M15 19h18M24 78v22M15 89h18" stroke="#dae5e6" strokeWidth="2" /><text x="17" y="62" fill="#d7e3e5" fontSize="22">+</text><text x="17" y="104" fill="#d7e3e5" fontSize="22">−</text></g>
