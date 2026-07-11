@@ -41,4 +41,16 @@ describe("ForecastTimeline playback", () => {
     expect(useSimulationStore.getState().forecast.currentMinutes).toBe(42);
     expect(screen.getByRole("button", { name: "Play forecast" })).toBeVisible();
   });
+
+  it("aligns the cyan track fill with the thumb at the current minute", () => {
+    useSimulationStore.getState().setCurrentMinutes(20);
+    render(<ForecastTimeline />);
+
+    const slider = screen.getByRole("slider", { name: "Forecast timeline" });
+
+    expect(slider).toHaveAttribute("min", "0");
+    expect(slider).toHaveAttribute("max", "60");
+    expect(slider).toHaveValue("20");
+    expect(slider.style.getPropertyValue("--timeline-progress")).toBe("33.33333333333333%");
+  });
 });
