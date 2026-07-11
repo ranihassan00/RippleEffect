@@ -4,7 +4,14 @@ import { Building2, GraduationCap, Hospital, Route, Train } from "lucide-react";
 import { useSimulation } from "@/hooks/useSimulation";
 import { Panel, PanelHeading } from "@/components/ui/Panel";
 
-const icons = { school: GraduationCap, hospital: Hospital, road: Route, transit: Train, "fire-station": Building2 };
+import type { InfrastructureType } from "@/lib/types";
+const icons: Record<InfrastructureType, typeof Building2> = {
+  school: GraduationCap,
+  hospital: Hospital,
+  road: Route,
+  transit: Train,
+  "fire-station": Building2
+};
 
 export function InfrastructurePanel() {
   const { currentFrame, forecast } = useSimulation();

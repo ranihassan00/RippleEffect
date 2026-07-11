@@ -8,8 +8,9 @@ import { DEMO_INFRASTRUCTURE } from "@/lib/demo-data";
 import { PlumeLayer } from "@/components/map/PlumeLayer";
 import { RiskZoneLayer } from "@/components/map/RiskZoneLayer";
 import { WindIndicator } from "@/components/map/WindIndicator";
+import type { InfrastructureType, LayerId } from "@/lib/types";
 
-function InfrastructureGlyph({ type }: { type: string }) {
+function InfrastructureGlyph({ type }: { type: InfrastructureType }) {
   if (type === "school") return <span className="map-marker-glyph glyph-school">◆</span>;
   if (type === "hospital") return <span className="map-marker-glyph glyph-hospital">H</span>;
   if (type === "transit") return <span className="map-marker-glyph glyph-transit">▣</span>;
@@ -80,7 +81,7 @@ export function IncidentMap() {
 
   const mapTransform = `translate(${viewport.offsetX}% ${viewport.offsetY}%) scale(${viewport.scale})`;
 
-  function renderLayerButton(layer: string, label: string) {
+  function renderLayerButton(layer: LayerId, label: string) {
     const visible = Boolean(layers[layer]);
     return <button key={layer} aria-label={`${visible ? "Hide" : "Show"} ${label.toLowerCase()} layer`} onClick={(event) => { stopMapEvent(event); toggleLayer(layer); }} onKeyDown={(event) => handleToolbarKeyDown(event, () => toggleLayer(layer))}>{visible ? "●" : "○"} {label}</button>;
   }

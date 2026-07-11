@@ -2,6 +2,7 @@ export type HazardCategory = "gas" | "vapour" | "smoke" | "particulate" | "unkno
 export type DensityClass = "buoyant" | "neutral" | "dense";
 export type RiskZoneId = "monitoring" | "advisory" | "shelter" | "evacuation" | "severe";
 export type InfrastructureType = "school" | "hospital" | "road" | "transit" | "fire-station";
+export type LayerId = "plume" | "uncertainty" | "infrastructure" | "wind";
 
 export interface HazardProfile {
   id: string;

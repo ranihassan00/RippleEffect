@@ -10,8 +10,9 @@ import { WeatherPanel } from "@/components/dashboard/WeatherPanel";
 import { ForecastPanel } from "@/components/dashboard/ForecastPanel";
 import { InfrastructurePanel } from "@/components/dashboard/InfrastructurePanel";
 import { ForecastTimeline } from "@/components/timeline/ForecastTimeline";
+import type { LayerId } from "@/lib/types";
 
-const displayLayers = [
+const displayLayers: ReadonlyArray<readonly [LayerId, string]> = [
   ["plume", "Probable impact zone"],
   ["uncertainty", "Forecast uncertainty"],
   ["infrastructure", "Critical infrastructure"],
