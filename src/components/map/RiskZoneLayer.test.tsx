@@ -7,7 +7,7 @@ describe("RiskZoneLayer", () => {
     const { container } = render(<svg><RiskZoneLayer centerX={118} centerY={386} minutes={30} visible /></svg>);
 
     expect(container.querySelector('g[aria-label="Risk zones"]')).toHaveAttribute("opacity", "1");
-    expect(container.querySelectorAll("title")).toHaveLength(5);
+    expect(container.querySelectorAll('circle[aria-label$="decision-support estimate"]')).toHaveLength(5);
   });
 
   it("keeps the risk geometry hidden when the layer is disabled", () => {
