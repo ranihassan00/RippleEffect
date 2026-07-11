@@ -238,3 +238,39 @@ body {
   outline: 1px solid var(--cyan);
   outline-offset: -2px;
 }
+
+/* The base rail span rule is more specific than .infra-icon; keep the icon box centered. */
+.infra-row .infra-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+.panel-heading-toggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font: inherit;
+}
+
+.panel-heading-toggle:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.panel-heading-toggle svg {
+  margin-left: auto;
+  transition: transform .18s ease;
+}
+
+.panel-heading-toggle[aria-expanded="false"] svg {
+  transform: rotate(-90deg);
+}

@@ -79,4 +79,14 @@ describe("dashboard display layers", () => {
     await user.type(note, "Updated operational note");
     expect(note).toHaveValue("Updated operational note");
   });
-});
+
+  it("makes every visible panel arrow collapse and expand its contents", async () => {
+    const user = userEvent.setup();
+    render(<DashboardPage />);
+
+    await user.click(screen.getByRole("button", { name: "Collapse Incident Configuration" }));
+    expect(screen.getByRole("button", { name: "Expand Incident Configuration" })).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(screen.getByRole("button", { name: "Collapse Display Layers" }));
+    expect(screen.getByRole("button", { name: "Expand Display Layers" })).toHaveAttribute("aria-expanded", "false");
+  });});
