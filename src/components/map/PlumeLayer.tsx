@@ -25,11 +25,11 @@ function plumePath(minutes: number, inset: number) {
 export function PlumeLayer({ minutes, visible, uncertaintyVisible }: PlumeLayerProps) {
   return (
     <g aria-label="Predicted concentration contours" opacity={visible ? 1 : 0}>
-      {uncertaintyVisible && <motion.path d={plumePath(minutes, -24)} fill="none" stroke="#79d7ff" strokeDasharray="10 8" strokeWidth="3" opacity="0.72" animate={{ d: plumePath(minutes, -24) }} transition={{ duration: 0.6 }} />}
+      {uncertaintyVisible && <path d={plumePath(minutes, -24)} fill="none" stroke="#79d7ff" strokeDasharray="10 8" strokeWidth="3" opacity="0.72" />}
       {layers.map((layer) => (
-        <motion.path key={layer.color} d={plumePath(minutes, layer.inset)} fill={layer.color} fillOpacity={layer.opacity} stroke={layer.color} strokeWidth="2" strokeOpacity="0.9" animate={{ d: plumePath(minutes, layer.inset) }} transition={{ duration: 0.6 }} />
+        <path key={layer.color} d={plumePath(minutes, layer.inset)} fill={layer.color} fillOpacity={layer.opacity} stroke={layer.color} strokeWidth="2" strokeOpacity="0.9" />
       ))}
-      <motion.path d={plumePath(minutes, 78)} fill="none" stroke="#f4f9fb" strokeWidth="1.5" strokeOpacity="0.48" animate={{ d: plumePath(minutes, 78) }} transition={{ duration: 0.6 }} />
+      <path d={plumePath(minutes, 78)} fill="none" stroke="#f4f9fb" strokeWidth="1.5" strokeOpacity="0.48" />
       <motion.g animate={{ x: minutes * 2.5 }} transition={{ duration: 0.65 }}>
         <circle cx="240" cy="382" r="9" fill="#ffd95b" opacity="0.95" />
         <circle cx="320" cy="372" r="5" fill="#ff9262" opacity="0.8" />
