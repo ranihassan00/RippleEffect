@@ -1,13 +1,14 @@
 "use client";
 
-import { Crosshair, Layers3, MapPin, Minus, Plus, RadioTower } from "lucide-react";
+import { Crosshair, Layers3, MapPin, Minus, Plus } from "lucide-react";
 import { useSimulation } from "@/hooks/useSimulation";
 import { mapPercentToGeo } from "@/lib/map-utils";
 import { DEMO_INFRASTRUCTURE } from "@/lib/demo-data";
 import { PlumeLayer } from "@/components/map/PlumeLayer";
+import type { InfrastructureType } from "@/lib/types";
 import { WindIndicator } from "@/components/map/WindIndicator";
 
-function InfrastructureGlyph({ type }: { type: string }) {
+function InfrastructureGlyph({ type }: { type: InfrastructureType }) {
   if (type === "school") return <span className="map-marker-glyph glyph-school">◆</span>;
   if (type === "hospital") return <span className="map-marker-glyph glyph-hospital">H</span>;
   if (type === "transit") return <span className="map-marker-glyph glyph-transit">▣</span>;

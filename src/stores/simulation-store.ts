@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { buildForecastFrames, clampTimeline } from "@/lib/forecast";
 import { DEFAULT_WEATHER } from "@/lib/demo-data";
-import type { ForecastState, IncidentDraft, WeatherSnapshot } from "@/lib/types";
+import type { ForecastState, IncidentDraft, LayerId, WeatherSnapshot } from "@/lib/types";
 
 const defaultIncident: IncidentDraft = {
   latitude: 45.4215,
@@ -23,12 +23,12 @@ interface SimulationStore {
   incident: IncidentDraft;
   weather: WeatherSnapshot;
   forecast: ForecastState;
-  layers: Record<string, boolean>;
+  layers: Record<LayerId, boolean>;
   setIncidentField: <K extends keyof IncidentDraft>(field: K, value: IncidentDraft[K]) => void;
   setWeatherField: <K extends keyof WeatherSnapshot>(field: K, value: WeatherSnapshot[K]) => void;
   placeIncident: (latitude: number, longitude: number) => void;
   setCurrentMinutes: (minutes: number) => void;
-  toggleLayer: (layer: string) => void;
+  toggleLayer: (layer: LayerId) => void;
   runForecast: () => void;
 }
 
