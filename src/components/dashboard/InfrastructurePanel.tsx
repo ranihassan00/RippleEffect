@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, GraduationCap, Hospital, Route, Train } from "lucide-react";
+import { Building2, GraduationCap, Hospital, Radio, Route, Train, Droplets, Zap } from "lucide-react";
 import { useSimulation } from "@/hooks/useSimulation";
 import { Panel, PanelHeading } from "@/components/ui/Panel";
 
@@ -10,7 +10,10 @@ const icons: Record<InfrastructureType, typeof Building2> = {
   hospital: Hospital,
   road: Route,
   transit: Train,
-  "fire-station": Building2
+  "fire-station": Building2,
+  utility: Zap,
+  communications: Radio,
+  water: Droplets,
 };
 
 export function InfrastructurePanel() {

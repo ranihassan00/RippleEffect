@@ -278,3 +278,91 @@ body {
 /* Keep the forecast timeline anchored to the dashboard's bottom grid row. */
 .workspace-grid { grid-row: 2; }
 .timeline-panel { grid-row: 3; }
+
+/* Reference-aligned tactical map overlays. */
+.maplibregl-ctrl-top-right { top: 12px; right: 12px; }
+.maplibregl-ctrl-bottom-left { left: 16px; bottom: 18px; }
+.maplibregl-ctrl-group { overflow: hidden; border: 1px solid #385465; border-radius: 3px; background: rgba(5, 18, 28, .94); box-shadow: 0 8px 18px rgba(0, 0, 0, .24); }
+.maplibregl-ctrl-group button { width: 34px; height: 34px; background: transparent; border-bottom: 1px solid #294754; }
+.maplibregl-ctrl-group button:last-child { border-bottom: 0; }
+.maplibregl-ctrl-group button:hover { background: #102c39; }
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(85%) sepia(14%) saturate(220%) hue-rotate(148deg); }
+.maplibregl-ctrl-scale { padding: 3px 6px 2px; color: #d5e3e5; border: 1px solid #637985; border-top: 0; background: rgba(5, 18, 28, .84); font: 9px var(--mono); }
+
+.map-infrastructure-callout { --marker-color: #82c6dc; display: flex; align-items: center; gap: 7px; min-width: 116px; padding: 6px 8px 6px 6px; color: #dfeff0; background: rgba(7, 19, 28, .96); border: 1px solid var(--marker-color); border-radius: 3px; box-shadow: 0 5px 14px rgba(0, 0, 0, .34); transform: translate(12px, -50%); text-align: left; }
+.map-infrastructure-callout:hover, .map-infrastructure-callout:focus-visible { background: #102d3a; box-shadow: 0 0 0 1px var(--marker-color), 0 8px 18px rgba(0, 0, 0, .38); }
+.map-infrastructure-callout:focus-visible { outline: 1px solid #dceff0; outline-offset: 2px; }
+.map-infrastructure-callout--school { --marker-color: #8fd65a; }
+.map-infrastructure-callout--hospital { --marker-color: #55b9f2; }
+.map-infrastructure-callout--fire-station { --marker-color: #ff7a46; }
+.map-infrastructure-callout--transit { --marker-color: #f4c84b; }
+.map-infrastructure-callout--water { --marker-color: #58b7f1; }
+.map-infrastructure-callout--utility { --marker-color: #e8b943; }
+.map-infrastructure-callout--communications, .map-infrastructure-callout--road { --marker-color: #b88bea; }
+.map-callout-icon { display: grid; width: 25px; height: 25px; flex: 0 0 25px; place-items: center; color: var(--marker-color); border: 1px solid color-mix(in srgb, var(--marker-color) 70%, transparent); background: rgba(9, 30, 40, .95); }
+.map-callout-copy { display: grid; gap: 3px; min-width: 0; }
+.map-callout-copy b { overflow: hidden; color: #edf7f7; font: 700 9px var(--mono); letter-spacing: .35px; text-overflow: ellipsis; white-space: nowrap; }
+.map-callout-copy small { color: #a5bcc1; font: 9px var(--mono); }
+.incident-map-marker { position: relative; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; color: #fff; background: transparent; border: 0; filter: drop-shadow(0 0 8px rgba(255, 67, 74, .48)); }
+.incident-map-marker__dot { display: block; width: 23px; height: 23px; border: 3px solid #fff; border-radius: 50%; background: #d82c3b; box-shadow: 0 0 0 4px rgba(216, 44, 59, .32); }
+.incident-map-marker__label { position: absolute; left: 29px; bottom: 32px; min-width: 92px; padding: 6px 8px; color: #fff; background: rgba(128, 22, 28, .96); border: 1px solid #f1575d; border-radius: 3px; font: 700 10px var(--mono); text-align: left; white-space: nowrap; }
+.incident-map-marker__label b { color: #ffc4bc; font-size: 7px; letter-spacing: .25px; }
+.map-error, .map-style-note { position: absolute; left: 50%; top: 14px; z-index: 4; max-width: min(420px, calc(100% - 32px)); padding: 7px 10px; transform: translateX(-50%); color: #ffc9bd; background: rgba(80, 25, 27, .92); border: 1px solid #b95a58; border-radius: 2px; font: 9px var(--mono); letter-spacing: .5px; }
+.map-style-note { color: #97bcc4; background: rgba(5, 20, 29, .86); border-color: #3b5966; }
+
+@media (min-width: 1201px) {
+  .workspace-grid { grid-template-columns: 292px minmax(0, 1fr) 300px; }
+  .topbar { gap: 22px; padding: 0 18px; }
+  .brand-lockup { min-width: 245px; }
+}
+
+@media (min-width: 761px) and (max-width: 1200px) {
+  .workspace-grid { grid-template-columns: 250px minmax(0, 1fr) 260px; }
+}
+
+@media (max-width: 760px) {
+  .map-infrastructure-callout { transform: translate(8px, -50%) scale(.9); transform-origin: left center; }
+  .incident-map-marker__label { left: 24px; }
+}
+
+/* Latest supplied reference: map-dominant command-center proportions. */
+@media (min-width: 1201px) {
+  .workspace-grid { grid-template-columns: 214px minmax(0, 1fr) 204px; }
+  .brand-lockup { min-width: 236px; }
+  .incident-headline { font-size: 15px; }
+}
+.map-footer-meta { display: none; }
+.map-column { min-height: 0; }
+.left-rail, .right-rail { scrollbar-width: thin; }
+.panel-heading { min-height: 39px; padding-left: 12px; padding-right: 12px; font-size: 10px; letter-spacing: 1.3px; }
+.panel-section { padding: 11px 12px 8px; }
+.section-kicker { margin-bottom: 8px; font-size: 8px; }
+.field-label { margin-top: 8px; font-size: 8px; }
+.field-label input, .field-label .ui-select { margin-top: 4px; min-height: 28px; font-size: 10px; }
+.map-infrastructure-callout { min-width: 98px; padding: 5px 6px 5px 5px; gap: 6px; }
+.map-callout-icon { width: 22px; height: 22px; flex-basis: 22px; }
+.map-callout-copy b { font-size: 8px; }
+.map-callout-copy small { font-size: 8px; }
+.map-model-note { right: 18px; bottom: 18px; }
+.map-map-label { bottom: 18px; }
+.timeline-panel { padding-top: 10px; padding-bottom: 9px; }
+
+.left-rail, .right-rail { min-height: 0; }
+@media (min-width: 761px) { .workspace-grid { overflow: hidden; } }
+
+.map-wind-card { position: absolute; top: 72px; left: 16px; z-index: 3; min-width: 138px; padding: 8px 10px 7px; color: #e3f0f1; background: rgba(5, 18, 28, .92); border: 1px solid #315365; border-radius: 3px; box-shadow: 0 8px 18px rgba(0, 0, 0, .3); font: 10px var(--mono); }
+.map-wind-arrows { display: flex; align-items: center; gap: 4px; margin-top: 7px; }
+.map-wind-arrows i { display: block; width: 24px; height: 7px; border-top: 2px solid #45c8ef; border-right: 2px solid #45c8ef; transform: skewX(24deg); }
+.map-north-indicator { position: absolute; top: 15px; left: 16px; z-index: 3; display: grid; width: 38px; height: 43px; place-items: center; color: #eef6f6; background: rgba(5, 18, 28, .9); border: 1px solid #47616e; border-radius: 2px; font: 11px var(--mono); }
+.map-north-indicator b { margin-top: -8px; color: #dfe8ea; font-size: 16px; line-height: 1; }
+
+/* Keep the draggable source circle centered on the geographic plume origin. */
+.incident-map-marker { width: 30px; height: 30px; }
+.incident-map-marker__dot { width: 24px; height: 24px; }
+.incident-map-marker__label { left: 22px; bottom: 19px; }
+
+/* Operational Note stays editable and scrollable without a boxed field chrome. */
+.operational-note { border: 0 !important; background: transparent !important; padding: 0 !important; outline: 0; }
+.operational-note:focus { border: 0 !important; box-shadow: none !important; }
+
+.operational-note { display: block; padding: 3px 0 0 !important; line-height: 1.45; text-align: left; vertical-align: top; }

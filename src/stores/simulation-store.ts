@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { buildForecastFrames, clampTimeline } from "@/lib/forecast";
+import { isValidCoordinate } from "@/lib/geo";
 import { DEFAULT_SCENARIO, SCENARIO_STORAGE_KEY, calculateScenarioMetrics, sanitizeScenario, validateScenario } from "@/lib/scenario";
 import type { ForecastState, IncidentDraft, IncidentScenario, LayerId, ScenarioErrorMap, ScenarioMetrics, WeatherSnapshot } from "@/lib/types";
 
@@ -31,7 +32,7 @@ function toWeather(scenario: IncidentScenario, modelTimestamp: string): WeatherS
     windDirection: scenario.weather.windDirection,
     temperatureC: scenario.weather.temperatureC,
     humidityPct: scenario.weather.humidityPercent,
-    stability: `${scenario.weather.stability} (${scenario.weather.stability === "D" ? "Neutral" : "Configured"})`,
+    stability: scenario.weather.stability + " (" + (scenario.weather.stability === "D" ? "Neutral" : "Configured") + ")",
     timestamp: modelTimestamp,
     source: "Manual input"
   };
@@ -50,7 +51,7 @@ interface SimulationStore {
   setScenarioField: (field: string, value: unknown) => void;
   setIncidentField: <K extends keyof IncidentDraft>(field: K, value: IncidentDraft[K]) => void;
   setWeatherField: <K extends keyof WeatherSnapshot>(field: K, value: WeatherSnapshot[K]) => void;
-  placeIncident: (latitude: number, longitude: number) => void;
+  placeIncident: (latitude: number, longitude: number) => boolean;
   setCurrentMinutes: (minutes: number) => void;
   toggleLayer: (layer: LayerId) => void;
   runForecast: () => void;
@@ -72,8 +73,16 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
   validationErrors: {},
   notice: null,
   modelTimestamp: "09:42",
-  layers: { plume: true, infrastructure: true, uncertainty: true, wind: true },
+  layers: { plume: true, infrastructure: true, uncertainty: true, wind: true, denseGasLimitation: true, schools: true, hospitals: true, roads: true, transit: true },
   setScenarioField: (field, value) => set((state) => {
+    if (field === "incident.latitude" || field === "incident.longitude") {
+      const coordinate = {
+        latitude: field === "incident.latitude" ? Number(value) : state.scenario.incident.latitude,
+        longitude: field === "incident.longitude" ? Number(value) : state.scenario.incident.longitude
+      };
+      if (!isValidCoordinate(coordinate)) return state;
+    }
+
     const next = structuredClone(state.scenario);
     const [section, key] = field.split(".");
     if (section === "incident" && key && key in next.incident) (next.incident as unknown as Record<string, unknown>)[key] = value;
@@ -98,8 +107,14 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     if (mapped) get().setScenarioField(mapped, field === "stability" ? String(value).slice(0, 1) : value);
   },
   placeIncident: (latitude, longitude) => {
-    get().setScenarioField("incident.latitude", latitude);
-    get().setScenarioField("incident.longitude", longitude);
+    if (!isValidCoordinate({ latitude, longitude })) return false;
+    set((state) => {
+      const next = structuredClone(state.scenario);
+      next.incident.latitude = Number(latitude.toFixed(6));
+      next.incident.longitude = Number(longitude.toFixed(6));
+      return { ...withMetrics(next), incident: toIncident(next), weather: toWeather(next, state.modelTimestamp), notice: null };
+    });
+    return true;
   },
   setCurrentMinutes: (minutes) => set((state) => ({ forecast: { ...state.forecast, currentMinutes: clampTimeline(minutes) } })),
   toggleLayer: (layer) => set((state) => ({ layers: { ...state.layers, [layer]: !state.layers[layer] } })),

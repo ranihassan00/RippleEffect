@@ -6,7 +6,7 @@ import { Activity, AlertTriangle, ChevronDown, Settings2 } from "lucide-react";
 import { useSimulation } from "@/hooks/useSimulation";
 import { HAZARDS } from "@/lib/demo-data";
 import { Button } from "@/components/ui/Button";
-import { IncidentMap } from "@/components/map/IncidentMap";
+import { MapLibreIncidentMap } from "@/components/map/MapLibreIncidentMap";
 import { IncidentPanel } from "@/components/dashboard/IncidentPanel";
 import { WeatherPanel } from "@/components/dashboard/WeatherPanel";
 import { ForecastPanel } from "@/components/dashboard/ForecastPanel";
@@ -47,7 +47,7 @@ export default function DashboardPage() {
     <p className="estimate-note">Estimated dispersion — decision-support estimate.</p>
   </div>
 </div></aside>
-      <section className="map-column"><IncidentMap /><div className="map-footer-meta"><span>MAPBOX / OTTAWA DEMO BASEMAP</span><span>GRID RESOLUTION 250 m</span><span>SIMULATION v0.1.0 · UI DEMO</span></div></section>
+      <section className="map-column"><MapLibreIncidentMap /><div className="map-footer-meta"><span>MAPBOX / OTTAWA DEMO BASEMAP</span><span>GRID RESOLUTION 250 m</span><span>SIMULATION v0.1.0 · UI DEMO</span></div></section>
       <aside className="right-rail"><ForecastPanel /><InfrastructurePanel /><RiskPanel /></aside>
     </div>
     <ForecastTimeline />

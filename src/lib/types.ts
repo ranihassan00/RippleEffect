@@ -1,10 +1,16 @@
 export type HazardCategory = "gas" | "vapour" | "smoke" | "particulate" | "unknown";
 export type DensityClass = "buoyant" | "neutral" | "dense";
 export type RiskZoneId = "monitoring" | "advisory" | "shelter" | "evacuation" | "severe";
-export type InfrastructureType = "school" | "hospital" | "road" | "transit" | "fire-station";
-export type LayerId = "plume" | "uncertainty" | "infrastructure" | "wind";
+export type InfrastructureType = "school" | "hospital" | "road" | "transit" | "fire-station" | "utility" | "communications" | "water";
+export type LayerId = "plume" | "uncertainty" | "infrastructure" | "wind" | "denseGasLimitation" | "schools" | "hospitals" | "roads" | "transit";
 export type RiskLevel = "Low" | "Moderate" | "High" | "Critical";
 export type StabilityClass = "A" | "B" | "C" | "D" | "E" | "F";
+
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
 
 export interface HazardProfile {
   id: string;
@@ -51,9 +57,13 @@ export interface InfrastructureFeature {
   type: InfrastructureType;
   name: string;
   shortLabel: string;
-  x: number;
-  y: number;
+  latitude?: number;
+  longitude?: number;
   zone: RiskZoneId;
+  status?: RiskLevel;
+  severity?: RiskLevel;
+  x?: number;
+  y?: number;
 }
 
 export interface ForecastFrame {

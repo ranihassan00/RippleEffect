@@ -1,4 +1,4 @@
-import type { HazardProfile, InfrastructureFeature, IncidentScenario } from "@/lib/types";
+﻿import type { HazardProfile, InfrastructureFeature, IncidentScenario } from "@/lib/types";
 
 export const HAZARDS: HazardProfile[] = [
   { id: "ammonia", name: "Ammonia", formula: "NH₃", category: "gas", densityClass: "dense", unit: "ppm", color: "#ff6a3d", modelWarning: "Dense gas: near-source behavior may not be represented by a standard Gaussian model." },
@@ -12,12 +12,15 @@ export const HAZARDS: HazardProfile[] = [
 export const INCIDENT_TYPES = ["Factory leak", "Warehouse fire", "Rail incident", "Tanker collision", "Pipeline failure"];
 
 export const DEMO_INFRASTRUCTURE: InfrastructureFeature[] = [
-  { id: "school-1", type: "school", name: "École élémentaire du Nouveau Monde", shortLabel: "2 schools", x: 63, y: 38, zone: "evacuation" },
-  { id: "school-2", type: "school", name: "Centretown Public School", shortLabel: "School", x: 51, y: 48, zone: "shelter" },
-  { id: "hospital-1", type: "hospital", name: "The Ottawa Hospital", shortLabel: "1 hospital", x: 72, y: 47, zone: "evacuation" },
-  { id: "transit-1", type: "transit", name: "Bayview Transit Station", shortLabel: "Transit", x: 37, y: 69, zone: "advisory" },
-  { id: "road-1", type: "road", name: "Bronson Avenue arterial", shortLabel: "Arterial", x: 58, y: 70, zone: "advisory" },
-  { id: "fire-1", type: "fire-station", name: "Station 14", shortLabel: "Fire station", x: 75, y: 21, zone: "monitoring" }
+  { id: "school-1", type: "school", name: "École élémentaire du Nouveau Monde", shortLabel: "School", latitude: 45.4306, longitude: -75.6813, zone: "evacuation", status: "High" },
+  { id: "school-2", type: "school", name: "Centretown Public School", shortLabel: "School", latitude: 45.4145, longitude: -75.6977, zone: "shelter", status: "Moderate" },
+  { id: "hospital-1", type: "hospital", name: "The Ottawa Hospital", shortLabel: "1 hospital", latitude: 45.3894, longitude: -75.6832, zone: "evacuation", status: "High" },
+  { id: "transit-1", type: "transit", name: "Bayview Transit Station", shortLabel: "Transit", latitude: 45.4052, longitude: -75.7301, zone: "advisory", status: "Moderate" },
+  { id: "road-1", type: "road", name: "Bronson Avenue arterial", shortLabel: "Arterial", latitude: 45.3971, longitude: -75.7014, zone: "advisory", status: "Moderate" },
+  { id: "fire-1", type: "fire-station", name: "Station 14", shortLabel: "Fire station", latitude: 45.4438, longitude: -75.6654, zone: "monitoring", status: "Low" },
+  { id: "utility-1", type: "utility", name: "Downtown electrical substation", shortLabel: "Utility", latitude: 45.4147, longitude: -75.6788, zone: "shelter", status: "Moderate" },
+  { id: "communications-1", type: "communications", name: "Emergency communications relay", shortLabel: "Communications", latitude: 45.4362, longitude: -75.7044, zone: "advisory", status: "Low" },
+  { id: "water-1", type: "water", name: "Ottawa water treatment intake", shortLabel: "Water", latitude: 45.4385, longitude: -75.7198, zone: "monitoring", status: "Low" }
 ];
 
 export const DEFAULT_WEATHER = {
